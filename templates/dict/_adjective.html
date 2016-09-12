@@ -1,0 +1,22 @@
+<table class="table table-responsive table-bordered">
+    <caption><strong>Inflected Forms</strong></caption>
+    <tr>
+        <th>Cách</th>
+        <th>Giống Đực</th>
+        <th>Giống Cái</th>
+        <th>Giống Trung</th>
+        <th>Số Nhiều</th>
+    </tr>
+
+    {% for con in context %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ con.male }}</td>
+            <td>{{ con.female }}</td>
+            <td>{{ con.neuter }}</td>
+            <td>{{ con.plur }}</td>
+        </tr>
+
+    {% endfor %}
+
+</table>

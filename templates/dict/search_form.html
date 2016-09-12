@@ -1,0 +1,31 @@
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <title>Search</title>#}
+{#    {% load static %}#}
+{#    <link rel="stylesheet" href="{% static 'dict/bootstrap.min.css' %}">#}
+{#</head>#}
+{#<body>#}
+{#    <p>{{ error_message }}</p>#}
+{#    <form class="form-inline" action="/dict/search/" method="get">#}
+{#        <input type="text" name="q">#}
+{#        <button class="btn btn-default" type="submit" value="Search">Look Up</button>#}
+{#    </form>#}
+{#</body>#}
+{#</html>#}
+<div class="container">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'dict/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'dict/style.css' %}">
+
+    <form class="form-inline" action="/dict/search/" method="get" >
+        <div class="form-group">
+            <div class="input-group custom-form">
+                <div class="input-group-addon">Ru - Vi</div>
+                <input type="text" class="form-control" name="q" placeholder="Type to search">
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary" value="Search"> Look Up</button>
+    </form>
+</div>

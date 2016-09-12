@@ -1,0 +1,37 @@
+
+body{
+    font-family: "Open Sans";
+    font-size: 16px;
+}
+
+.definition{
+    font-style: normal;
+    font-size: 18px;
+    font-family: SansSerif;
+}
+
+form{
+    margin-top: 50px;
+}
+
+table,caption,th{
+    text-align: center;
+
+}
+
+.custom-form{
+    width: 500px;
+}
+
+th{
+    color: #ffffff;
+    background-color: #2D6FAE;
+}
+
+/*table, th, td {*/
+    /*border: 1px solid black;*/
+    /*border-collapse: collapse;*/
+    /*padding: 15px;*/
+    /*border-spacing: 5px;*/
+    /*text-align: center;*/
+/*}*/
