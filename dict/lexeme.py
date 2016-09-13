@@ -1,7 +1,11 @@
 import pymorphy2
 
-inflect_word = "час"
 
+inflect_word = "Дешифрирование"
+# перестановочный
+# алоэ
+# вычислительных
+# Дешифрирование
 morph = pymorphy2.MorphAnalyzer()
 info = morph.parse(inflect_word)[0]
 j = 0
