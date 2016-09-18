@@ -57,7 +57,8 @@ def search(request):
 
         similar_words = {}
         if (not contain):
-            similar_words = KeyWord.objects.filter(keyWord__istartswith=q)
+            similar_words = KeyWord.objects.filter(keyWord__icontains=search_query.group())
+            print(len(similar_words))
 
         if (classifier in ['NOUN', 'NPRO']):
             noun = Noun(search_query.group())
@@ -110,7 +111,7 @@ def report(request):
     """method for importing the database of the dictionary"""
     key_words = []
     file = open('tonghop.txt', 'r')
-    file.readline()
+    # file.readline()
     content = file.readlines()
     context = "successful"
     error = "failure"
@@ -130,13 +131,13 @@ def report(request):
         q.save()
     return render(request, 'dict/report.html', {'context': context, 'failure': error})
 
-
-# def get_search_query(request):
-#     if request.method == 'GET':
-#         form = SearchForm(request.GET)
-#         # if form.is_valid():
-#         #     return Ht
-#     else:
-#         form = SearchForm()
+# def report(request):
+#     """method for importing the database of the dictionary"""
+#     key_words = []
+#     file = open('test.txt', 'r')
+#     content = file.readlines()
 #
-#     return render(request, 'dict/test_search_form.html', {'form': form})
+#     for line in content:
+#         q = KeyWord(keyWord=line)
+#         q.save()
+#     return render(request, 'dict/report.html', {'context': "successfull", 'failure': "error"})
