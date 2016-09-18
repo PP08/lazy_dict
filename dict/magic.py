@@ -129,7 +129,7 @@ class Adjective_type1(Word):
 
 class Adjective_type2(Adjective_type1):
     """class for type 2 of adjectives"""
-
+    # TODO: write this class,
 
 
 

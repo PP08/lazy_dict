@@ -58,7 +58,7 @@ def search(request):
         similar_words = {}
         if (not contain):
             similar_words = KeyWord.objects.filter(keyWord__icontains=search_query.group())
-            print(len(similar_words))
+            print(similar_words)
 
         if (classifier in ['NOUN', 'NPRO']):
             noun = Noun(search_query.group())
@@ -89,7 +89,7 @@ def search(request):
                 context_n = num._context_n
                 return render(request, 'dict/search_results.html',
                               {'definition': dict_reader._meaning, 'query': q, 'similar_words': similar_words,
-                               'context': context, 'classifier': classifier, 'context_n': context_n, 'type': type })
+                               'context': context, 'classifier': classifier, 'context_n': context_n, 'type': type, })
             else:
                 type = 2
                 num.lookup_words_num_type2()
@@ -99,7 +99,7 @@ def search(request):
                 return render(request, 'dict/search_results.html',
                               {'definition': dict_reader._meaning, 'query': q, 'similar_words': similar_words,
                                'context': context, 'classifier': classifier, 'context_n': context_n, 'type': type })
-        return render(request, 'dict/search_results.html', {'definition': dict_reader._meaning})
+        return render(request, 'dict/search_results.html', {'definition': dict_reader._meaning, 'similar_words': similar_words})
     return render(request, 'dict/search_form.html', {'error_message': "Please submit the search form!", })
 
 
