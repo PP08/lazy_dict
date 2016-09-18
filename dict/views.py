@@ -1,9 +1,10 @@
+import re
 from django.http import HttpResponse
 from django.shortcuts import render
-from .models import Dictionary, KeyWord
-from .magic import Word, Noun, NounType2, Adjective_type1
+from .models import KeyWord
+from .magic import Word, Noun, NounType2, Adjective_type1, Number
 from .import_dict import DictFileReader
-import re
+
 
 def index(request):
     return HttpResponse("Hello, world.")
@@ -21,26 +22,37 @@ def search(request):
         search_query = prog_input.search(q)
         word = Word(search_query.group())
         word.normalize()
-        if('ё' in word._normal_word):
+        if 'ё' in word._normal_word:
             word._normal_word = word._normal_word.replace("ё", "е")
 
         dict_reader = DictFileReader('tonghop.dict')
         # word._normal_word = ' ' + word._normal_word + '\n'
         line_contains_keyword = ''
         contain = False
-        pattern = '\s+\d+\s+\d+\s+' + word._normal_word + '\s'
-        prog = re.compile(pattern)
+
+        pattern1 = '\s+\d+\s+\d+\s+' + search_query.group() + '\s'
+        prog1 = re.compile(pattern1)
+
+        pattern2 = '\s+\d+\s+\d+\s+' + word._normal_word + '\s'
+        prog2 = re.compile(pattern2)
         # TODO rewrite new method for this searching...
         with open('tonghop.txt') as file:
             content = file.read()
-            line = prog.search(content)
-            if(line):
-                array = line.group().split()
+            line1 = prog1.search(content)
+            if (line1):
+                array = line1.group().split()
                 contain = True
                 offset = int(array[0])
                 size = int(array[1])
-                dict_reader.get_meaning_by_index(offset,size)
-
+                dict_reader.get_meaning_by_index(offset, size)
+            else:
+                line2 = prog2.search(content)
+                if (line2):
+                    array = line2.group().split()
+                    contain = True
+                    offset = int(array[0])
+                    size = int(array[1])
+                    dict_reader.get_meaning_by_index(offset, size)
         classifier = word._pos
 
         similar_words = {}
@@ -64,17 +76,40 @@ def search(request):
             context = adj._context
             return render(request, 'dict/search_results.html',
                           {'definition': dict_reader._meaning, 'query': q, 'similar_words': similar_words,
-                           'context': context, 'classifier': classifier,})
+                           'context': context, 'classifier': classifier, })
 
-    return render(request, 'dict/search_form.html', {'error_message': "Please submit the search form!"})
+        elif classifier in 'NUMR':
+            num = Number(q)
+            if len(num.info) > 40:
+                type = 1
+                num.lookup_words_num_type1()
+                num.lookup_words_a()
+                context = num._context
+                context_n = num._context_n
+                return render(request, 'dict/search_results.html',
+                              {'definition': dict_reader._meaning, 'query': q, 'similar_words': similar_words,
+                               'context': context, 'classifier': classifier, 'context_n': context_n, 'type': type })
+            else:
+                type = 2
+                num.lookup_words_num_type2()
+                num.lookup_words()
+                context = num._context
+                context_n = num._context_n
+                return render(request, 'dict/search_results.html',
+                              {'definition': dict_reader._meaning, 'query': q, 'similar_words': similar_words,
+                               'context': context, 'classifier': classifier, 'context_n': context_n, 'type': type })
+        return render(request, 'dict/search_results.html', {'definition': dict_reader._meaning})
+    return render(request, 'dict/search_form.html', {'error_message': "Please submit the search form!", })
+
 
 def import_dict(request):
     return render(request, 'dict/import_dict.html')
 
+
 def report(request):
     """method for importing the database of the dictionary"""
     key_words = []
-    file = open('tonghop.txt','r')
+    file = open('tonghop.txt', 'r')
     file.readline()
     content = file.readlines()
     context = "successful"
@@ -82,8 +117,8 @@ def report(request):
     for line in content:
         array = line.split()
         word = ''
-        if(len(array) > 3):
-            for i in range(2,len(array) - 1):
+        if (len(array) > 3):
+            for i in range(2, len(array) - 1):
                 word += word + array[i] + ' '
             word += array[-1]
         else:
@@ -96,3 +131,12 @@ def report(request):
     return render(request, 'dict/report.html', {'context': context, 'failure': error})
 
 
+# def get_search_query(request):
+#     if request.method == 'GET':
+#         form = SearchForm(request.GET)
+#         # if form.is_valid():
+#         #     return Ht
+#     else:
+#         form = SearchForm()
+#
+#     return render(request, 'dict/test_search_form.html', {'form': form})

@@ -11,26 +11,27 @@
 
         <p>Your search for: <strong>{{ query }}</strong></p>
 
+        {% if definition %}
+            <p>the definition for your search is: </p>
+
+            <div class="definition">
+                {% autoescape off %}
+                    {{ definition }}
+                {% endautoescape %}
+            </div>
+
+        {% elif not definition and context %}
+            <p>Your word you typed would be a name or something like that, so it does not have a definition :D</p>
+        {% endif %}
+
         {% if context %}
-            {% if definition %}
-                <p>the definition for your search is: </p>
-
-                <div class="definition">
-                    {% autoescape off %}
-                        {{ definition }}
-                    {% endautoescape %}
-                </div>
-
-            {% elif not definition and context %}
-                <p>Your word you typed would be a name or something like that, so it does not have a definition :D</p>
-            {% endif %}
-
             {% if classifier == 'NOUN' or classifier == 'NPRO' %}
                 {% include "dict/_noun.html" %}
-            {% elif classifier == 'ADJF'%}
+            {% elif classifier == 'ADJF' %}
                 {% include "dict/_adjective.html" %}
+            {% elif classifier == 'NUMR' %}
+                {% include "dict/_number.html" %}
             {% endif %}
-
         {% endif %}
 
         {% if similar_words %}

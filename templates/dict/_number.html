@@ -1,0 +1,45 @@
+{% if type == 1 %}
+    <table class="table table-responsive table-bordered">
+        <caption><strong>Inflected Forms</strong></caption>
+        <tr>
+            <th>Падеж</th>
+            <th>Муж</th>
+            <th>Жен</th>
+        </tr>
+
+
+        {% for con in context_n %}
+            <tr>
+                <td>{{ con.name }}</td>
+
+                <td>{{ con.male }}</td>
+
+                <td>{{ con.female }}</td>
+            </tr>
+
+        {% endfor %}
+    </table>
+
+{% elif type == 2 %}
+    <table class="table table-responsive table-bordered">
+        <caption><strong>Inflected Forms</strong></caption>
+        <tr>
+            <th>Падеж</th>
+            <th></th>
+        </tr>
+
+
+        {% for con in context_n %}
+            <tr>
+                <td>{{ con.name }}</td>
+
+                <td>{{ con.inflection }}</td>
+            </tr>
+
+        {% endfor %}
+    </table>
+{% endif %}
+
+
+
+{% include "dict/_adjective.html" %}
