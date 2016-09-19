@@ -49,9 +49,11 @@ class Noun(Word):
 
     def classify(self, tag, case, word):
         """method for words classifier"""
-        if ('sing' in str(tag.number)) and (not('Patr' in str(tag))) and (not('Fixd' in str(tag))) and (not('V-be') in str(tag)):
+        if ('sing' in str(tag.number)) and (not ('Patr' in str(tag))) and (not ('Fixd' in str(tag))) and (
+                not ('V-be') in str(tag)):
             case['sing'] = word
-        elif ('plur' in str(tag.number)) and (not('Patr' in str(tag))) and (not('Fixd' in str(tag))):
+        elif ('plur' in str(tag.number)) and (not ('Patr' in str(tag))) and (not ('Fixd' in str(tag))) and (
+                not ('V-be') in str(tag)):
             case['plur'] = word
 
     def lookup_words(self):
@@ -128,13 +130,11 @@ class Adjective_type1(Word):
             self._context.append(i)
 
 
-
-
 class Adjective_type2(Adjective_type1):
     """class for type 2 of adjectives"""
 
     def __init__(self, input_word):
-        Adjective_type1.__init__(self,input_word)
+        Adjective_type1.__init__(self, input_word)
         self._context_for_type2 = []
         self._context_for_comparison = {}
         self._context_for_shorten_adj = {}
@@ -169,16 +169,15 @@ class Adjective_type2(Adjective_type1):
         else:
             context['plural'] = word
 
-    def classify_for_comparison (self, tag, context, word):
-        if 'Qual' in str(tag) and not 'V-ej' in str(tag) and not('Cmp2' in str(tag)):
+    def classify_for_comparison(self, tag, context, word):
+        if 'Qual' in str(tag) and not 'V-ej' in str(tag) and not ('Cmp2' in str(tag)):
             context['type1'] = word
-        elif 'Qual V-ej' in str(tag) and not('Cmp2' in str(tag)):
+        elif 'Qual V-ej' in str(tag) and not ('Cmp2' in str(tag)):
             context['type2'] = word
         elif ('Qual Cmp2' in str(tag)) and not ('V-ej' in str(tag)):
             context['type3'] = word
         elif 'Qual Cmp2' in str(tag) and ('V-ej' in str(tag)):
             context['type4'] = word
-
 
     def lookup_words_type2(self):
         for i in self.info:
@@ -200,7 +199,8 @@ class Adjective_type2(Adjective_type1):
             if (str(i.tag.case) == 'loct'):
                 self.classify2(i.tag, self._case6_type2, i.word)
 
-        for i in (self._case1_type2, self._case2_type2, self._case3_type2, self._case4_type2, self._case5_type2, self._case6_type2):
+        for i in (self._case1_type2, self._case2_type2, self._case3_type2, self._case4_type2, self._case5_type2,
+                  self._case6_type2):
             self._context_for_type2.append(i)
 
     def lookup_shorten(self):
@@ -213,8 +213,10 @@ class Adjective_type2(Adjective_type1):
             if 'COMP' in str(i.tag):
                 self.classify_for_comparison(i.tag, self._context_for_comparison, i.word)
 
+
 class Number(Adjective_type1):
     """class for number"""
+
     def __init__(self, input_word):
         Adjective_type1.__init__(self, input_word)
         self._case1_n = {}
@@ -234,7 +236,6 @@ class Number(Adjective_type1):
         self._case4_n_2 = {}
         self._case4_n_2['name'] = 'винительный (одушевлённое)'
         self._context_n = []
-
 
     def classify_num(self, tag, case, word):
         if 'NUMR masc' in str(tag.POS) or 'masc' in str(tag.gender):
@@ -258,7 +259,7 @@ class Number(Adjective_type1):
             elif (str(i.tag.case) == 'accs') and ('NUMR inan' in str(i.tag)):
                 self.classify_num(i.tag, self._case4_n, i.word)
 
-            elif(str(i.tag.case) == 'accs') and ('NUMR anim' in str(i.tag)):
+            elif (str(i.tag.case) == 'accs') and ('NUMR anim' in str(i.tag)):
                 self.classify_num(i.tag, self._case4_n_2, i.word)
 
             elif (str(i.tag.case) == 'ablt'):
@@ -267,7 +268,9 @@ class Number(Adjective_type1):
             elif (str(i.tag.case) == 'loct'):
                 self.classify(i.tag, self._case6_n, i.word)
 
-        for i in (self._case1_n, self._case2_n, self._case3_n, self._case4_n, self._case4_n_2, self._case5_n, self._case6_n):
+        for i in (
+                self._case1_n, self._case2_n, self._case3_n, self._case4_n, self._case4_n_2, self._case5_n,
+                self._case6_n):
             self._context_n.append(i)
 
     def lookup_words_num_type2(self):
@@ -295,10 +298,12 @@ class Number(Adjective_type1):
             if 'NUMR loct' in str(i.tag):
                 self._case6_n['inflection'] = i.word
 
-        for i in (self._case1_n, self._case2_n, self._case3_n, self._case4_n, self._case4_n_2, self._case4_n_s, self._case5_n, self._case6_n):
+        for i in (
+                self._case1_n, self._case2_n, self._case3_n, self._case4_n, self._case4_n_2, self._case4_n_s,
+                self._case5_n,
+                self._case6_n):
             if len(i.values()) == 2:
                 self._context_n.append(i)
-
 
     def lookup_words_a(self):
         for i in self.info:
@@ -314,7 +319,7 @@ class Number(Adjective_type1):
             if (str(i.tag.case) == 'nomn') and (str(i.tag.POS) == 'ADJF'):
                 self.classify(i.tag, self._case4, i.word)
 
-            if (str(i.tag.case) == 'ablt') and (str(i.tag.POS) == 'ADJF') and not('V-ey' in str(i.tag)):
+            if (str(i.tag.case) == 'ablt') and (str(i.tag.POS) == 'ADJF') and not ('V-ey' in str(i.tag)):
                 self.classify(i.tag, self._case5, i.word)
 
             if (str(i.tag.case) == 'loct') and (str(i.tag.POS) == 'ADJF'):
@@ -322,7 +327,6 @@ class Number(Adjective_type1):
 
         for i in (self._case1, self._case2, self._case3, self._case4, self._case5, self._case6):
             self._context.append(i)
-
 
 # print(noun.info)
 

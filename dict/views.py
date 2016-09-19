@@ -1,9 +1,11 @@
 import re
+
 from django.http import HttpResponse
 from django.shortcuts import render
-from .models import KeyWord
-from .magic import Word, Noun, NounType2, Adjective_type1, Number, Adjective_type2
+
 from .import_dict import DictFileReader
+from .magic import Word, Noun, NounType2, Adjective_type1, Number, Adjective_type2
+from .models import KeyWord
 
 
 def index(request):
@@ -26,8 +28,6 @@ def search(request):
             word._normal_word = word._normal_word.replace("ё", "е")
 
         dict_reader = DictFileReader('tonghop.dict')
-        # word._normal_word = ' ' + word._normal_word + '\n'
-        line_contains_keyword = ''
         contain = False
 
         pattern1 = '\s+\d+\s+\d+\s+' + search_query.group() + '\s'
@@ -60,61 +60,66 @@ def search(request):
             similar_words = KeyWord.objects.filter(keyWord__icontains=search_query.group())
             print(similar_words)
 
-        if (classifier in ['NOUN', 'NPRO']):
-            noun = Noun(search_query.group())
-            noun.lookup_words()
-            context = noun._context
+        if classifier != None:
+            if (classifier in ['NOUN', 'NPRO']):
+                noun = Noun(search_query.group())
+                noun.lookup_words()
+                context = noun._context
 
-            noun_type2 = NounType2(search_query.group())
-            noun_type2.lookup_words()
+                noun_type2 = NounType2(search_query.group())
+                noun_type2.lookup_words()
 
+                return render(request, 'dict/search_results.html',
+                              {'definition': dict_reader._meaning, 'query': q, 'similar_words': similar_words,
+                               'context': context, 'classifier': classifier, 'context2': noun_type2._context})
+            elif classifier in 'ADJF':
+
+                if not ('Qual' in word.tag):
+                    type = 1
+                    adj = Adjective_type1(search_query.group())
+                    adj.lookup_words()
+                    context = adj._context
+                    return render(request, 'dict/search_results.html',
+                                  {'definition': dict_reader._meaning, 'query': q, 'similar_words': similar_words,
+                                   'context': context, 'classifier': classifier, 'type': type, })
+                elif 'Qual' in word.tag:
+                    type = 2
+                    adj = Adjective_type2(search_query.group())
+                    adj.lookup_words()
+                    adj.lookup_words_type2()
+                    adj.lookup_comparison()
+                    adj.lookup_shorten()
+                    return render(request, 'dict/search_results.html',
+                                  {'definition': dict_reader._meaning, 'query': q, 'similar_words': similar_words,
+                                   'context': adj._context, 'context_comp': adj._context_for_comparison,
+                                   'context_type2': adj._context_for_type2,
+                                   'context_shorten': adj._context_for_shorten_adj, 'classifier': classifier,
+                                   'type': type, })
+
+
+            elif classifier in 'NUMR':
+                num = Number(search_query.group())
+                if len(num.info) > 40:
+                    type = 1
+                    num.lookup_words_num_type1()
+                    num.lookup_words_a()
+                    context = num._context
+                    context_n = num._context_n
+                    return render(request, 'dict/search_results.html',
+                                  {'definition': dict_reader._meaning, 'query': q, 'similar_words': similar_words,
+                                   'context': context, 'classifier': classifier, 'context_n': context_n, 'type': type, })
+                else:
+                    type = 2
+                    num.lookup_words_num_type2()
+                    num.lookup_words()
+                    context = num._context
+                    context_n = num._context_n
+                    return render(request, 'dict/search_results.html',
+                                  {'definition': dict_reader._meaning, 'query': q, 'similar_words': similar_words,
+                                   'context': context, 'classifier': classifier, 'context_n': context_n, 'type': type})
+        elif classifier == None:
             return render(request, 'dict/search_results.html',
-                          {'definition': dict_reader._meaning, 'query': q, 'similar_words': similar_words,
-                           'context': context, 'classifier': classifier, 'context2': noun_type2._context})
-        elif classifier in 'ADJF':
-
-            if not('Qual' in word.tag):
-                type = 1
-                adj = Adjective_type1(search_query.group())
-                adj.lookup_words()
-                context = adj._context
-                return render(request, 'dict/search_results.html',
-                              {'definition': dict_reader._meaning, 'query': q, 'similar_words': similar_words,
-                               'context': context, 'classifier': classifier, 'type': type, })
-            elif 'Qual' in word.tag:
-                type = 2
-                adj = Adjective_type2(search_query.group())
-                adj.lookup_words()
-                adj.lookup_words_type2()
-                adj.lookup_comparison()
-                adj.lookup_shorten()
-                return render(request, 'dict/search_results.html',
-                              {'definition': dict_reader._meaning, 'query': q, 'similar_words': similar_words,
-                               'context': adj._context, 'context_comp': adj._context_for_comparison, 'context_type2': adj._context_for_type2,
-                               'context_shorten': adj._context_for_shorten_adj,'classifier': classifier, 'type': type, })
-
-
-        elif classifier in 'NUMR':
-            num = Number(search_query.group())
-            if len(num.info) > 40:
-                type = 1
-                num.lookup_words_num_type1()
-                num.lookup_words_a()
-                context = num._context
-                context_n = num._context_n
-                return render(request, 'dict/search_results.html',
-                              {'definition': dict_reader._meaning, 'query': q, 'similar_words': similar_words,
-                               'context': context, 'classifier': classifier, 'context_n': context_n, 'type': type, })
-            else:
-                type = 2
-                num.lookup_words_num_type2()
-                num.lookup_words()
-                context = num._context
-                context_n = num._context_n
-                return render(request, 'dict/search_results.html',
-                              {'definition': dict_reader._meaning, 'query': q, 'similar_words': similar_words,
-                               'context': context, 'classifier': classifier, 'context_n': context_n, 'type': type })
-        return render(request, 'dict/search_results.html', {'definition': dict_reader._meaning, 'similar_words': similar_words})
+                      {'definition': dict_reader._meaning, 'similar_words': similar_words})
     return render(request, 'dict/search_form.html', {'error_message': "Please submit the search form!", })
 
 
@@ -145,4 +150,3 @@ def report(request):
         q = KeyWord(keyWord=word)
         q.save()
     return render(request, 'dict/report.html', {'context': context, 'failure': error})
-
