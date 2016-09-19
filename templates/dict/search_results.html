@@ -31,6 +31,8 @@
                 {% include "dict/_adjective.html" %}
             {% elif classifier == 'NUMR' %}
                 {% include "dict/_number.html" %}
+            {% elif classifier == 'INFN' or classifier == 'VERB' or classifier == 'PRTS' %}
+                {% include "dict/_verbs.html" %}
             {% endif %}
         {% endif %}
 

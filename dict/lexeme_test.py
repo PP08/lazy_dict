@@ -1,7 +1,7 @@
 import pymorphy2
 
 
-inflect_word = "идти"
+inflect_word = "делан"
 morph = pymorphy2.MorphAnalyzer()
 info = morph.parse(inflect_word)[0]
 j = 0
@@ -14,7 +14,7 @@ for i in info.lexeme:
 
 file.close()
 
-inflect_word2 = "делающая"
+inflect_word2 = "делан"
 morph2 = pymorphy2.MorphAnalyzer()
 info2 = morph2.parse(inflect_word2)[0]
 j = 0

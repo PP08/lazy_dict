@@ -6,6 +6,7 @@ from django.shortcuts import render
 from .import_dict import DictFileReader
 from .magic import Word, Noun, NounType2, Adjective_type1, Number, Adjective_type2
 from .models import KeyWord
+from .verbs import Verbs_imperfect
 
 
 def index(request):
@@ -53,6 +54,8 @@ def search(request):
                     offset = int(array[0])
                     size = int(array[1])
                     dict_reader.get_meaning_by_index(offset, size)
+
+        # return render(request,'dict/search_results.html', {'definition': dict_reader._meaning})
         classifier = word._pos
 
         similar_words = {}
@@ -61,7 +64,7 @@ def search(request):
             print(similar_words)
 
         if classifier != None:
-            if (classifier in ['NOUN', 'NPRO']):
+            if classifier in ['NOUN', 'NPRO']:
                 noun = Noun(search_query.group())
                 noun.lookup_words()
                 context = noun._context
@@ -107,7 +110,8 @@ def search(request):
                     context_n = num._context_n
                     return render(request, 'dict/search_results.html',
                                   {'definition': dict_reader._meaning, 'query': q, 'similar_words': similar_words,
-                                   'context': context, 'classifier': classifier, 'context_n': context_n, 'type': type, })
+                                   'context': context, 'classifier': classifier, 'context_n': context_n,
+                                   'type': type, })
                 else:
                     type = 2
                     num.lookup_words_num_type2()
@@ -117,10 +121,22 @@ def search(request):
                     return render(request, 'dict/search_results.html',
                                   {'definition': dict_reader._meaning, 'query': q, 'similar_words': similar_words,
                                    'context': context, 'classifier': classifier, 'context_n': context_n, 'type': type})
+
+            elif classifier in ['INFN', 'VERB', 'PRTS']:
+
+                verb = Verbs_imperfect(search_query.group())
+                verb.look_up()
+
+                return render(request, 'dict/search_results.html',
+                              {'definition': dict_reader._meaning, 'query': q, 'similar_words': similar_words,
+                               'context': verb._present, 'context_for_past': verb._past, 'context_for_command_type1': verb._command_type1, 'context_for_command_type2': verb._command_type2, 'classifier': classifier})
+
+
         elif classifier == None:
             return render(request, 'dict/search_results.html',
-                      {'definition': dict_reader._meaning, 'similar_words': similar_words})
-    return render(request, 'dict/search_form.html', {'error_message': "Please submit the search form!", })
+                          {'definition': dict_reader._meaning, 'similar_words': similar_words})
+    else:
+        return render(request, 'dict/search_form.html', {'error_message': "Please submit the search form!", })
 
 
 def import_dict(request):

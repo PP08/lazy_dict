@@ -20,7 +20,7 @@ class Word:
 
     def normalize(self):
         info = self._morph.parse(self._input_word)
-        self._normal_word = info[0][2]
+        self._normal_word = info[0].normal_form
         # print(self._normal_word)
 
 
