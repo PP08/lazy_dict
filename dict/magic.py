@@ -8,7 +8,7 @@ class Word:
         self._morph = pymorphy2.MorphAnalyzer()
         self.info = self._morph.parse(inputWord)[0].lexeme
         self.tag = self._morph.parse(inputWord)[0].tag
-        self._pos = self._morph.parse(inputWord)[0].tag.POS
+        self._pos = ''
         self._case1 = {}
         self._case2 = {}
         self._case3 = {}
@@ -19,8 +19,9 @@ class Word:
         self._context = []
 
     def normalize(self):
-        info = self._morph.parse(self._input_word)
-        self._normal_word = info[0].normal_form
+        info_tmp = self._morph.parse(self._input_word)
+        self._normal_word = info_tmp[0].normal_form
+        self._pos = self._morph.parse(self._normal_word)[0].tag.POS
         # print(self._normal_word)
 
 

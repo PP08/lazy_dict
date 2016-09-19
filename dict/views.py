@@ -122,7 +122,7 @@ def search(request):
                                   {'definition': dict_reader._meaning, 'query': q, 'similar_words': similar_words,
                                    'context': context, 'classifier': classifier, 'context_n': context_n, 'type': type})
 
-            elif classifier in ['INFN', 'VERB', 'PRTS']:
+            elif classifier in ['INFN', 'VERB']:
 
                 verb = Verbs_imperfect(search_query.group())
                 verb.look_up()

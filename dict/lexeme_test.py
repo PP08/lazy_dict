@@ -1,9 +1,18 @@
 import pymorphy2
 
 
-inflect_word = "делан"
+inflect_word = "красен"
 morph = pymorphy2.MorphAnalyzer()
 info = morph.parse(inflect_word)[0]
+
+normal_word = info.normal_form
+
+info2 = morph.parse(normal_word)[0]
+
+pos = info2.tag.POS
+
+print(pos)
+
 j = 0
 file = open('output1.txt', 'w')
 
