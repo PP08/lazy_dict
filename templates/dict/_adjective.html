@@ -1,3 +1,4 @@
+
 <table class="table table-responsive table-bordered">
     <caption><strong>Inflected Forms</strong></caption>
     <tr>
@@ -20,3 +21,71 @@
     {% endfor %}
 
 </table>
+
+{% if type == 2 %}
+
+    <table class="table table-responsive table-bordered">
+        <caption><strong>Inflected Forms</strong></caption>
+        <tr>
+            <th>Cách</th>
+            <th>Giống Đực</th>
+            <th>Giống Cái</th>
+            <th>Giống Trung</th>
+            <th>Số Nhiều</th>
+        </tr>
+
+        {% for con in context_type2 %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ con.male }}</td>
+                <td>{{ con.female }}</td>
+                <td>{{ con.neuter }}</td>
+                <td>{{ con.plur }}</td>
+            </tr>
+
+        {% endfor %}
+
+    </table>
+
+
+    <div class="row">
+
+        <div class="col-md-5 col-md-offset-1">
+            <table class="table table-responsive table-bordered">
+                <caption><strong>Comparison</strong></caption>
+                <th>Type</th>
+                <th>Inflected form</th>
+
+                {% for key,value in context_comp.items %}
+                    <tr>
+                        <td>{{ key }}</td>
+                        <td>{{ value }}</td>
+                    </tr>
+
+                {% endfor %}
+
+            </table>
+        </div>
+
+        <div class="col-md-5">
+            <table class="table table-responsive table-bordered">
+                <caption><strong>Comparison</strong></caption>
+                <th>Type</th>
+                <th>Inflected form</th>
+
+                {% for key,value in context_shorten.items %}
+                    <tr>
+                        <td>{{ key }}</td>
+                        <td>{{ value }}</td>
+                    </tr>
+
+                {% endfor %}
+
+            </table>
+        </div>
+
+    </div>
+
+{% endif %}
+
+

@@ -7,6 +7,7 @@ class Word:
         self._normal_word = ""
         self._morph = pymorphy2.MorphAnalyzer()
         self.info = self._morph.parse(inputWord)[0].lexeme
+        self.tag = self._morph.parse(inputWord)[0].tag
         self._pos = self._morph.parse(inputWord)[0].tag.POS
         self._case1 = {}
         self._case2 = {}
@@ -127,12 +128,90 @@ class Adjective_type1(Word):
             self._context.append(i)
 
 
+
+
 class Adjective_type2(Adjective_type1):
     """class for type 2 of adjectives"""
+
+    def __init__(self, input_word):
+        Adjective_type1.__init__(self,input_word)
+        self._context_for_type2 = []
+        self._context_for_comparison = {}
+        self._context_for_shorten_adj = {}
+        self._case1_type2 = {}
+        self._case2_type2 = {}
+        self._case3_type2 = {}
+        self._case4_type2 = {}
+        self._case5_type2 = {}
+        self._case6_type2 = {}
+
     # TODO: write this class,
+    def classify2(self, tag, case, word):
+        if 'sing' in str(tag.number):
+            # if 'ADJF macs' in str(tag) or 'masc' in str(tag) or 'Qual masc' in str(tag):
+            if str(tag.gender) == 'masc':
+                case['male'] = word
+            if str(tag.gender) == 'femn':
+                case['female'] = word
+            if str(tag.gender) == 'neut':
+                case['neuter'] = word
+        if 'plur' in str(tag.number) and not ('Supr' in str(tag)):
+            case['plur'] = word
+
+    def classify_for_shorten(self, tag, context, word):
+        """"""
+        if str(tag.gender) == 'masc':
+            context['male'] = word
+        elif str(tag.gender) == 'femn':
+            context['female'] = word
+        elif str(tag.gender) == 'neut':
+            context['neuter'] = word
+        else:
+            context['plural'] = word
+
+    def classify_for_comparison (self, tag, context, word):
+        if 'Qual' in str(tag) and not 'V-ej' in str(tag) and not('Cmp2' in str(tag)):
+            context['type1'] = word
+        elif 'Qual V-ej' in str(tag) and not('Cmp2' in str(tag)):
+            context['type2'] = word
+        elif ('Qual Cmp2' in str(tag)) and not ('V-ej' in str(tag)):
+            context['type3'] = word
+        elif 'Qual Cmp2' in str(tag) and ('V-ej' in str(tag)):
+            context['type4'] = word
 
 
+    def lookup_words_type2(self):
+        for i in self.info:
+            if str(i.tag.case) == 'nomn':
+                self.classify2(i.tag, self._case1_type2, i.word)
 
+            if str(i.tag.case) == 'gent':
+                self.classify2(i.tag, self._case2_type2, i.word)
+
+            if (str(i.tag.case) == 'datv'):
+                self.classify2(i.tag, self._case3_type2, i.word)
+
+            if (str(i.tag.case) == 'nomn'):
+                self.classify2(i.tag, self._case4_type2, i.word)
+
+            if (str(i.tag.case) == 'accs'):
+                self.classify2(i.tag, self._case5_type2, i.word)
+
+            if (str(i.tag.case) == 'loct'):
+                self.classify2(i.tag, self._case6_type2, i.word)
+
+        for i in (self._case1_type2, self._case2_type2, self._case3_type2, self._case4_type2, self._case5_type2, self._case6_type2):
+            self._context_for_type2.append(i)
+
+    def lookup_shorten(self):
+        for i in self.info:
+            if 'ADJS' in str(i.tag):
+                self.classify_for_shorten(i.tag, self._context_for_shorten_adj, i.word)
+
+    def lookup_comparison(self):
+        for i in self.info:
+            if 'COMP' in str(i.tag):
+                self.classify_for_comparison(i.tag, self._context_for_comparison, i.word)
 
 class Number(Adjective_type1):
     """class for number"""

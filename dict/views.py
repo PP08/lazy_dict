@@ -2,7 +2,7 @@ import re
 from django.http import HttpResponse
 from django.shortcuts import render
 from .models import KeyWord
-from .magic import Word, Noun, NounType2, Adjective_type1, Number
+from .magic import Word, Noun, NounType2, Adjective_type1, Number, Adjective_type2
 from .import_dict import DictFileReader
 
 
@@ -72,15 +72,30 @@ def search(request):
                           {'definition': dict_reader._meaning, 'query': q, 'similar_words': similar_words,
                            'context': context, 'classifier': classifier, 'context2': noun_type2._context})
         elif classifier in 'ADJF':
-            adj = Adjective_type1(q)
-            adj.lookup_words()
-            context = adj._context
-            return render(request, 'dict/search_results.html',
-                          {'definition': dict_reader._meaning, 'query': q, 'similar_words': similar_words,
-                           'context': context, 'classifier': classifier, })
+
+            if not('Qual' in word.tag):
+                type = 1
+                adj = Adjective_type1(search_query.group())
+                adj.lookup_words()
+                context = adj._context
+                return render(request, 'dict/search_results.html',
+                              {'definition': dict_reader._meaning, 'query': q, 'similar_words': similar_words,
+                               'context': context, 'classifier': classifier, 'type': type, })
+            elif 'Qual' in word.tag:
+                type = 2
+                adj = Adjective_type2(search_query.group())
+                adj.lookup_words()
+                adj.lookup_words_type2()
+                adj.lookup_comparison()
+                adj.lookup_shorten()
+                return render(request, 'dict/search_results.html',
+                              {'definition': dict_reader._meaning, 'query': q, 'similar_words': similar_words,
+                               'context': adj._context, 'context_comp': adj._context_for_comparison, 'context_type2': adj._context_for_type2,
+                               'context_shorten': adj._context_for_shorten_adj,'classifier': classifier, 'type': type, })
+
 
         elif classifier in 'NUMR':
-            num = Number(q)
+            num = Number(search_query.group())
             if len(num.info) > 40:
                 type = 1
                 num.lookup_words_num_type1()
@@ -131,13 +146,3 @@ def report(request):
         q.save()
     return render(request, 'dict/report.html', {'context': context, 'failure': error})
 
-# def report(request):
-#     """method for importing the database of the dictionary"""
-#     key_words = []
-#     file = open('test.txt', 'r')
-#     content = file.readlines()
-#
-#     for line in content:
-#         q = KeyWord(keyWord=line)
-#         q.save()
-#     return render(request, 'dict/report.html', {'context': "successfull", 'failure': "error"})
