@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% load static %}
+    <title>Home</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'dict/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'dict/css/typeaheadjs.css' %}">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <script src="{% static 'dict/js/typeahead.bundle.js' %}"></script>
+    <script src="{% static 'dict/js/form.sticky.handle.js' %}"></script>
+
+
+</head>
+<body>
+
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">
+                    <img src="{% static "dict/images/blade.svg" %}" alt="Dispute Bills">
+                </a>
+            </div>
+        </div>
+        <!--/.container-fluid -->
+    </nav>
+
+
+    <div id="sticky-anchor"></div>
+    <!--search form -->
+    <div class="container sticky" id="search-form">
+        <div class="row">
+            <div class="col-lg-6 col-lg-offset-3">
+                <form class="input-group" method="GET" id="scrollable-dropdown-menu">
+                    {% csrf_token %}
+                    <input type="text" class="form-control typeahead" placeholder="Type to search..." id="search-text">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit">
+                            <span class="glyphicon glyphicon-search" id="search_icon"></span>
+                        </button>
+                    </span>
+                </form><!-- /input-group -->
+            </div><!-- /.col-lg-6 -->
+        </div><!-- /.row -->
+    </div>
+
+
+    <!--test-->
+    <div id="test"></div>
+
+
+</body>
+
+<script>
+    var countries = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.whitespace,
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        prefetch: '{% static 'dict/js/words.json' %}'
+    });
+
+    $('#scrollable-dropdown-menu .typeahead').typeahead(null, {
+        name: 'countries',
+        limit: 50,
+        source: countries
+    });
+
+</script>
+
+<script src="{% static 'dict/js/result.searching.handle.js' %}"></script>
+</html>

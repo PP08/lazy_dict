@@ -8,13 +8,15 @@ from .magic import Word, Noun, NounType2, Adjective_type1, Number, Adjective_typ
 from .models import KeyWord
 from .verbs import Verbs_imperfect
 
+import json
+
 
 def index(request):
     return HttpResponse("Hello, world.")
 
 
 def search_form(request):
-    return render(request, 'dict/search_form.html')
+    return render(request, 'dict/base.html')
 
 
 def search(request):
@@ -75,6 +77,15 @@ def search(request):
                 return render(request, 'dict/search_results.html',
                               {'definition': dict_reader._meaning, 'query': q, 'similar_words': similar_words,
                                'context': context, 'classifier': classifier, 'context2': noun_type2._context})
+
+                # response_data = {}
+                #
+                # response_data['definition'] = dict_reader._meaning
+                #
+                # return HttpResponse(
+                #     json.dumps(response_data),
+                #     content_type="application/json"
+                # )
             elif classifier in 'ADJF':
 
                 if not ('Qual' in word.tag):

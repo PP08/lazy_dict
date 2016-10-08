@@ -1,0 +1,40 @@
+.navbar-brand {
+    padding: 0px;
+}
+.navbar-brand>img {
+    height: 100%;
+    padding: 12px;
+    width: auto;
+}
+
+#search-form{
+    margin-top: 150px;
+}
+
+#scrollable-dropdown-menu .tt-menu {
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+
+.sticky {
+    padding: 0.5ex;
+    font-size: 2em;
+    border-radius: 0ex;
+}
+
+.sticky.stick {
+    margin-top: 0 !important;
+    position: fixed;
+    top: 0;
+    z-index: 10000;
+}
+
+.navbar-default{
+     background-color: #ffffff;
+     border: none;
+ }
+
+.btn{
+    border-radius: 0ex;
+}
