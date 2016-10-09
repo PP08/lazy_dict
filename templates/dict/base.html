@@ -36,11 +36,11 @@
     <div class="container sticky" id="search-form">
         <div class="row">
             <div class="col-lg-6 col-lg-offset-3">
-                <form class="input-group" method="GET" id="scrollable-dropdown-menu">
+                <form class="input-group" method="post" id="scrollable-dropdown-menu">
                     {% csrf_token %}
                     <input type="text" class="form-control typeahead" placeholder="Type to search..." id="search-text">
                     <span class="input-group-btn">
-                        <button class="btn btn-default" type="submit">
+                        <button class="btn btn-primary" type="submit">
                             <span class="glyphicon glyphicon-search" id="search_icon"></span>
                         </button>
                     </span>
@@ -71,5 +71,11 @@
 
 </script>
 
+
+<script src="{% static 'dict/js/handlebars.js' %}"></script>
+
+{% include 'dict/_noun.html' %}
+
 <script src="{% static 'dict/js/result.searching.handle.js' %}"></script>
+
 </html>

@@ -20,5 +20,5 @@ from dict import views
 urlpatterns = [
     url(r'^dict/', include('dict.urls')),
     url(r'^admin/', admin.site.urls),
-    url(r'^\s*$', views.search_form, name='search_form'),
+    url(r'^\s*$', views.index, name='search_form'),
 ]

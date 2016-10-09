@@ -1,59 +1,38 @@
-<table class="table table-responsive table-bordered">
-    <caption><strong>Inflected Forms</strong></caption>
-    <tr>
-        <th>Падеж</th>
-        <th>Един.</th>
-        <th>Мног.</th>
-    </tr>
+{% verbatim %}
+<script id="entry-template" type="text/template">
 
-
-    {% for con in context %}
-        <tr>
-            <td>{{ forloop.counter }}</td>
-            {% if con.sing %}
-                <td>{{ con.sing }}</td>
-            {% else %}
-                <td>-</td>
-            {% endif %}
-
-            {% if con.plur %}
-                <td>{{ con.plur }}</td>
-            {% else %}
-                <td>-</td>
-            {% endif %}
-
-        </tr>
-
-    {% endfor %}
-</table>
-
-{% if context2.0.sing %}
-
-    <table class="table table-hover">
-            <caption><strong>Bảng cho từ giống cái</strong></caption>
+    <div class="container">
+        <table class="table table-responsive table-bordered table-hover">
+            <caption><strong>Inflected Forms</strong></caption>
             <tr>
-                <th>Cách</th>
-                <th>Số ít</th>
-                <th>Số nhiều</th>
+                <th>Падеж</th>
+                <th>Един.</th>
+                <th>Мног.</th>
             </tr>
 
 
-            {% for con in context2 %}
-                <tr>
-                    <td>{{ forloop.counter }}</td>
-                    {% if con.sing %}
-                        <td>{{ con.sing }}</td>
-                    {% else %}
-                        <td>-</td>
-                    {% endif %}
+            {{#each context}}
+            <tr>
+                <td>case</td>
+                {{#if sing}}
+                <td>{{sing}}</td>
+                {{else}}
+                <td>-</td>
+                {{/if}}
 
-                    {% if con.plur %}
-                        <td>{{ con.plur }}</td>
-                    {% else %}
-                        <td>-</td>
-                    {% endif %}
-                </tr>
-            {% endfor %}
-    </table>
+                {{#if plur}}
+                <td>{{plur}}</td>
+                {{else}}
+                <td>-</td>
+                {{/if}}
 
-{% endif %}
+            </tr>
+
+            {{/each}}
+        </table>
+    </div>
+
+</script>
+
+{% endverbatim %}
+
