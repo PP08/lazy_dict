@@ -1,0 +1,76 @@
+{% verbatim %}
+    <script id="adj-template" type="text/template">
+        <div class="container">
+            <div style="overflow-x:auto;">
+                <table class="table table-responsive table-bordered custom-table">
+                    <tr>
+                        <th>Падеж.</th>
+                        <th>Муж.</th>
+                        <th>Жен.</th>
+                        <th>Ср.</th>
+                        <th>Мн.</th>
+                    </tr>
+
+                    {{#each context}}
+                    <tr>
+                        <td>{{ name }}</td>
+                        <td>{{ male }}</td>
+                        <td>{{ female }}</td>
+                        <td>{{ neuter }}</td>
+                        <td>{{ plur }}</td>
+                    </tr>
+
+                    {{/each}}
+
+                </table>
+            </div>
+
+
+            {{#if type }}
+
+                <div class="row">
+                    <div class="col-md-5 col-md-offset-1">
+                        <table class="table table-responsive table-bordered custom-table">
+
+                            <th>Type</th>
+                            <th>Inflected form</th>
+
+                            {{#each context_comp as |value key|}}
+                            <tr>
+                                <td>{{ key }}</td>
+                                <td>{{ value }}</td>
+                            </tr>
+
+                            {{/each}}
+
+                        </table>
+                    </div>
+
+                    <div class="col-md-5">
+                        <table class="table table-responsive table-bordered custom-table">
+                            <tr>
+                                <th>Type</th>
+                                <th>Inflected form</th>
+                            </tr>
+
+                            {{#each context_shorten as |value key|}}
+                            <tr>
+                                <td>{{ key }}</td>
+                                <td>{{ value }}</td>
+                            </tr>
+
+                            {{/each}}
+
+                        </table>
+                    </div>
+
+                </div>
+
+            {{/if}}
+
+        </div>
+
+    </script>
+
+
+{% endverbatim %}

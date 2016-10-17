@@ -1,0 +1,131 @@
+{% verbatim %}
+
+<script type="text/template" id="verb-template">
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-md-5 col-md-offset-1">
+                <table class="table table-responsive table-bordered custom-table">
+                    <tr>
+                        <th>Case</th>
+                        <th>Inflected form</th>
+                    </tr>
+
+                    <tr>
+                        <td>Я</td>
+                        <td>{{ context.i }}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Ты</td>
+                        <td>{{ context.you1 }}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Он, Она, Оно</td>
+                        <td>{{ context.hesheit }}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Вы</td>
+                        <td>{{ context.you2 }}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Они</td>
+                        <td>{{ context.they }}</td>
+                    </tr>
+
+                </table>
+            </div>
+
+            <div class="col-md-5">
+
+                <table class="table table-responsive table-bordered custom-table">
+                    <tr>
+                        <th>Case</th>
+                        <th>Inflected form</th>
+                    </tr>
+
+                    <tr>
+                        <td>Я, Ты, Он</td>
+                        <td>{{ context_for_past.ihe }}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Она</td>
+                        <td>{{ context_for_past.she }}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Оно</td>
+                        <td>{{ context_for_past.it }}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Вы, Они</td>
+                        <td>{{ context_for_past.they }}</td>
+                    </tr>
+
+                    <tr>
+                        <td>@@</td>
+                        <td>@@</td>
+                    </tr>
+
+                </table>
+
+            </div>
+
+
+            <div class="col-md-4 col-md-offset-4">
+
+                {{#if context_for_command_type1}}
+
+                    <table class="table table-responsive table-bordered custom-table">
+                        <tr>
+                            <th>Case</th>
+                            <th>Inflected form</th>
+                        </tr>
+
+                        <tr>
+                            <td>Type1</td>
+                            <td>{{ context_for_command_type1.sing }}</td>
+                        </tr>
+
+                        <tr>
+                            <td>Type2</td>
+                            <td>{{ context_for_command_type1.plur }}</td>
+                        </tr>
+                    </table>
+
+                {{else if context_for_command_type2}}
+                    <table class="table table-responsive table-bordered custom-table">
+                        <tr>
+                            <th>Case</th>
+                            <th>Inflected form</th>
+                        </tr>
+
+                        <tr>
+                            <td>Type1</td>
+                            <td>{{ context_for_command_type2.sing }}</td>
+                        </tr>
+
+                        <tr>
+                            <td>Type2</td>
+                            <td>{{ context_for_command_type2.plur }}</td>
+                        </tr>
+                    </table>
+
+                {{/if}}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</script>
+
+{% endverbatim %}

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    {% load static %}
+    <title>Home</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'dict/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'dict/css/typeaheadjs.css' %}">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300" rel="stylesheet">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <script src="{% static 'dict/js/typeahead.bundle.js' %}"></script>
+    <script src="{% static 'dict/js/form.sticky.handle.js' %}"></script>
+    <script src="{% static 'dict/js/toggle.button.js' %}"></script>
+
+
+
+</head>
+<body>
+
+    <nav class="navbar navbar-default navbar-fixed-top" id="nav">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">
+                    <img src="{% static "dict/images/blade.svg" %}" alt="PPDict">
+                </a>
+            </div>
+        </div>
+        <!--/.container-fluid -->
+    </nav>
+
+
+    <div id="sticky-anchor"></div>
+    <!--search form -->
+    <div class="container sticky" id="search-form">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <form class="input-group has-clear" method="post" id="scrollable-dropdown-menu">
+                    {% csrf_token %}
+                    <input type="text" class="form-control typeahead" placeholder="Type to search..." id="search-text" name="searchInput">
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" type="submit" id="search-btn">
+                            <span class="glyphicon glyphicon-search" id="search_icon"></span>
+                        </button>
+                    </span>
+                </form><!-- /input-group -->
+            </div><!-- /.col-lg-6 -->
+        </div><!-- /.row -->
+    </div>
+
+
+    <!-- definition of the word -->
+    <div id="definition"></div>
+
+    <!--button for showing table of inflections-->
+    <div id="show-button" class="container">
+        <button id="button" class="btn btn-primary hidden">Show the table of inflections</button>
+    </div>
+
+    <!-- slide down effect -->
+    <div id="effect">
+        <!--table for inflected form-->
+        <div id="inflected-table"></div>
+    </div>
+
+    <!--script for handlerbars-->
+    <script src="{% static 'dict/js/handlebars.js' %}"></script>
+
+
+    <!--script for suggestions input-->
+    <script>
+        var words = new Bloodhound({
+            datumTokenizer: Bloodhound.tokenizers.whitespace,
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            prefetch: '{% static 'dict/js/words.json' %}'
+        });
+
+        $('#scrollable-dropdown-menu .typeahead').typeahead(null, {
+            name: 'words',
+            limit: 50,
+            source: words,
+            templates: {
+    {#        suggestion: Handlebars.compile('<strong>{% verbatim myblock%}{{words}}{% endverbatim myblock%}</strong>')#}
+            }
+        });
+
+
+    </script>
+
+    <!--html template -->
+
+    {% include 'dict/_definition.html' %}
+    {% include 'dict/_noun.html' %}
+    {% include 'dict/_adjective.html' %}
+    {% include 'dict/_number.html' %}
+    {% include 'dict/_verbs.html' %}
+
+    <!-- AJAX for getting the inflections of word -->
+    <script src="{% static 'dict/js/result.searching.handle.js' %}"></script>
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-85769249-1', 'auto');
+      ga('send', 'pageview');
+
+    </script>
+
+</body>
+
+</html>

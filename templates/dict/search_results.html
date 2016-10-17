@@ -1,0 +1,52 @@
+
+<body>
+    <div class="container">
+
+        {% load static %}
+
+        <link rel="stylesheet" type="text/css" href="{% static 'dict/bootstrap.min.css' %}" />
+        <link rel="stylesheet" href="{% static 'dict/css/style.css' %}" type="text/css">
+
+        {% include "dict/search_form.html" %}
+
+        <p>Your search for: <strong>{{ query }}</strong></p>
+
+        {% if definition %}
+            <p>the definition for your search is: </p>
+
+            <div class="definition">
+                {% autoescape off %}
+                    {{ definition }}
+                {% endautoescape %}
+            </div>
+
+        {% elif not definition and context %}
+            <p>Your word you typed would be a name or something like that, so it does not have a definition :D</p>
+        {% endif %}
+
+        {% if context %}
+            {% if classifier == 'NOUN' or classifier == 'NPRO' %}
+                {% include "dict/_noun.html" %}
+            {% elif classifier == 'ADJF' %}
+                {% include "dict/_adjective.html" %}
+            {% elif classifier == 'NUMR' %}
+                {% include "dict/_number.html" %}
+            {% elif classifier == 'INFN' or classifier == 'VERB' %}
+                {% include "dict/_verbs.html" %}
+            {% endif %}
+        {% endif %}
+
+        {% if similar_words %}
+            <p>these words maybe match your search:</p>
+            <ul>
+                {% for word in similar_words %}
+                    <li><a href="{% url 'dict:search'%}?q={{ word.keyWord }}"> {{ word.keyWord }}</a></li>
+                {% endfor %}
+            </ul>
+        {% elif not definition and not similar_words and not context %}
+            <p>there is no word matched your search criteria</p>
+        {% endif %}
+    </div>
+
+</body>
+

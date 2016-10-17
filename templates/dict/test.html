@@ -1,0 +1,71 @@
+{% verbatim myblock%}
+    <script id="entry-template" type="text/template">
+        <h1>{{ classifier }}</h1>
+    </script>
+{% endverbatim myblock%}
+
+
+{% verbatim %}
+<script id="entry-template" type="text/template">
+    <table class="table table-responsive table-bordered">
+        <caption><strong>Inflected Forms</strong></caption>
+        <tr>
+            <th>Падеж</th>
+            <th>Един.</th>
+            <th>Мног.</th>
+        </tr>
+
+
+        {{ #each context }}
+        <tr>
+            <td>case</td>
+            {{ #if sing }}
+            <td>{{ sing }}</td>
+            {{ else }}
+            <td>-</td>
+            {{ /if }}
+
+            {{ #if plur }}
+            <td>{{ plur }}</td>
+            {{ else }}
+            <td>-</td>
+            {{ /if }}
+
+        </tr>
+
+        {{ /each }}
+    </table>
+</script>
+{% endverbatim %}
+
+
+{% if amount %}
+
+    <table class="table table-hover">
+        <caption><strong>Bảng cho từ giống cái</strong></caption>
+        <tr>
+            <th>Cách</th>
+            <th>Số ít</th>
+            <th>Số nhiều</th>
+        </tr>
+
+
+        {% for con in context2 %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                {% if con.sing %}
+                    <td>{{ con.sing }}</td>
+                {% else %}
+                    <td>-</td>
+                {% endif %}
+
+                {% if con.plur %}
+                    <td>{{ con.plur }}</td>
+                {% else %}
+                    <td>-</td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endif %}

@@ -1,0 +1,9 @@
+/**
+ * Created by PhucPhuong on 09/10/2016.
+ */
+
+{% verbatim %}
+
+    <h1>{{ title }}</h1>
+
+{% endverbatim %}

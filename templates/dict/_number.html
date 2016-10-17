@@ -1,0 +1,54 @@
+{% verbatim %}
+<script id="num-template" type="text/template">
+
+    <div class="container">
+        <div style="overflow-x:auto;">
+
+            <table class="table table-responsive table-bordered custom-table">
+                <tr>
+                    <th>Падеж</th>
+                    <th></th>
+                </tr>
+
+                {{#each context_n}}
+                <tr>
+                    <td>{{ name }}</td>
+
+                    <td>{{ inflection }}</td>
+                </tr>
+
+                {{/each}}
+            </table>
+
+        </div>
+
+        <div style="overflow-x:auto;">
+            <table class="table table-responsive table-bordered custom-table">
+                <tr>
+                    <th>Падеж.</th>
+                    <th>Муж.</th>
+                    <th>Жен.</th>
+                    <th>Ср.</th>
+                    <th>Мн.</th>
+                </tr>
+
+                {{#each context}}
+                <tr>
+                    <td>{{ name }}</td>
+                    <td>{{ male }}</td>
+                    <td>{{ female }}</td>
+                    <td>{{ neuter }}</td>
+                    <td>{{ plur }}</td>
+                </tr>
+
+                {{/each}}
+
+            </table>
+        </div>
+
+    </div>
+
+</script>
+{% endverbatim %}
+
+

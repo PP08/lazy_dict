@@ -1,0 +1,20 @@
+{% verbatim %}
+
+<script id="definition-template" type="text/template">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <div id='definition-box'>
+                    {{#if not_found}}
+                        {{{not_found}}}
+                    {{else}}
+                        {{{wdefinition}}}
+                    {{/if }}
+                </div>
+            </div>
+        </div>
+
+    </div>
+</script>
+
+{% endverbatim %}
