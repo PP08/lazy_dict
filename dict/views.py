@@ -10,6 +10,8 @@ from .import_dict import DictFileReader
 from .magic import Word, Noun, NounType2, Adjective_type1, Number, Adjective_type2
 from .verbs import Verbs_imperfect, Verb_perfect
 
+from gtts import gTTS
+
 path1 = os.path.abspath('data/tonghop.dict')
 path2 = os.path.abspath('data/tonghop.txt')
 
@@ -25,6 +27,11 @@ def search(request):
         response_data = {}
 
         q = request.POST.get('query')
+        #
+        # tts = gTTS(q, lang='ru')
+        # tts.save(os.path.abspath('dict/static') + '/audio.mp3')
+        # path = os.path.abspath('dict/static/audio.mp3')
+        # response_data['path'] = path
 
         temp = tokenizers.simple_word_tokenize(q)
 
@@ -158,3 +165,23 @@ def search(request):
             json.dumps(response_data),
             content_type="application/json"
         )
+
+
+# def speech(request):
+#     response_data = {}
+#     text = request.POST.get('text')
+#     if text:
+#         tts = gTTS(text, lang='ru')
+#         tts.save(os.path.abspath('dict/static') + '/audio.mp3')
+#         path = os.path.abspath('dict/static/audio.mp3')
+#         response_data['path'] = path
+#
+#     else:
+#         response_data['error'] = 'error'
+#
+#     return HttpResponse(
+#         json.dumps(response_data),
+#         content_type="application/json"
+#     )
+
+

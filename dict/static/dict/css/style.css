@@ -130,3 +130,22 @@ th{
     font-weight:bold;
     visibility:hidden;
 }
+
+
+/*text to speech btn*/
+
+#tts-btn{
+    background-color: transparent;
+    border: 1px solid #2B90B8;
+    border-radius: 10%;
+    margin-left: 5px;
+}
+
+#tts-btn:hover {
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
+#tts_icon{
+    color: #2B90B8;
+}
+

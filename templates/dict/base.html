@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     {% load static %}
@@ -48,6 +49,15 @@
                             <span class="glyphicon glyphicon-search" id="search_icon"></span>
                         </button>
                     </span>
+                    <span class="input-group-btn">
+                        <button class="btn" id="tts-btn" type="reset">
+                            <span class="glyphicon glyphicon-volume-up" id="tts_icon"></span>
+                        </button>
+                    </span>
+
+
+
+
                 </form><!-- /input-group -->
             </div><!-- /.col-lg-6 -->
         </div><!-- /.row -->
@@ -113,6 +123,9 @@
       ga('send', 'pageview');
 
     </script>
+
+
+    <audio src="{% static 'audio.mp3' %}" id="myaudio"></audio>
 
 </body>
 

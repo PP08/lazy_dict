@@ -102,3 +102,14 @@ function search() {
             }
         });
 };
+
+
+$('#scrollable-dropdown-menu').on('reset', function(event){
+    event.preventDefault();
+    console.log("get the audio file for me!");// sanity check
+
+});
+
+
+
+
