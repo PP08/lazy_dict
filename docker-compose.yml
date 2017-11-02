@@ -13,7 +13,7 @@ services:
         condition: on-failure
     ports:
       - "80:80"
-    command: uwsgi --http :80 --module MTproject.wsgi
+    command: uwsgi --http :80 --module lazy_dict.wsgi
 #    command: uwsgi --ini mysite_uwsgi.ini
     volumes:
       - .:/app
