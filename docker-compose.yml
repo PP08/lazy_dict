@@ -12,8 +12,8 @@ services:
       restart_policy:
         condition: on-failure
     ports:
-      - "80:80"
-    command: uwsgi --http :80 --module MTproject.wsgi
+      - "80:8000"
+    command: python manage.py runserver 0.0.0.0:8000
 #    command: uwsgi --ini mysite_uwsgi.ini
     volumes:
       - .:/app

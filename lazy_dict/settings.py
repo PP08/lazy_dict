@@ -25,7 +25,7 @@ SECRET_KEY = 'kgbrlo($pp4g8#j@dl-z!f4^=$c-aatt$zt5-s327k3l=n4w!$'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
